@@ -1,0 +1,65 @@
+name: Deploy Demo to GitHub Pages
+
+on:
+  push:
+    branches: ["main"] # Если у тебя ветка называется master, замени main на master
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Bundle Size Guard (Эмуляция сбоя)
+        run: |
+          SIZE_BYTES=$(du -cb dist/assets/*.js dist/assets/*.css 2>/dev/null | grep total | awk '{print $1}')
+          if [ -z "$SIZE_BYTES" ]; then
+            SIZE_BYTES=$(du -sb dist | awk '{print $1}')
+          fi
+          SIZE_KB=$(echo "scale=2; $SIZE_BYTES / 1024" | bc)
+          echo "📦 Итоговый размер сборки для GitHub Pages: $SIZE_KB КБ"
+          
+          LIMIT_KB=0.5 # Тестовый жесткий лимит для симуляции сбоя
+          
+          if (( $(echo "$SIZE_KB > $LIMIT_KB" | bc -l) )); then
+            echo "❌ КРИТИЧЕСКИЙ СБОЙ: Размер превысил лимит в $LIMIT_KB КБ!"
+            echo "Автоматический деплой на github.io ЗАБЛОКИРОВАН во избежание поломки продакшена."
+            exit 1
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
