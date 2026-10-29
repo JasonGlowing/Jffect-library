@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jffect lib — библиотека веб-эффектов</title>
+<style>
+:root{
+  --bg:#0b0d17;--bg2:#1b1f3a;--card:#161a2e;--border:#2a2f52;
+  --text:#e8eaf6;--muted:#9fa8da;--accent:#7c4dff;--accent2:#00e5ff;--code:#0b0d17;
+  color-scheme:dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --bg:#f5f6ff;--bg2:#e3e6ff;--card:#ffffff;--border:#d3d7f5;
+    --text:#1a1d3a;--muted:#555b8c;--accent:#5b34e0;--accent2:#007c91;--code:#eef0ff;
+    color-scheme:light;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b0d17;--bg2:#1b1f3a;--card:#161a2e;--border:#2a2f52;
+  --text:#e8eaf6;--muted:#9fa8da;--accent:#7c4dff;--accent2:#00e5ff;--code:#0b0d17;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  background-image:radial-gradient(circle at top,var(--bg2) 0%,var(--bg) 60%);
+  background-attachment:fixed;
+  color:var(--text);line-height:1.6;min-height:100vh;
+}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.logo{font-weight:800;font-size:1.2rem;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav a{color:var(--muted);text-decoration:none;margin-left:20px;font-size:.95rem}
+nav a:hover{color:var(--text)}
+.hero{text-align:center;padding:80px 0 60px}
+.hero h1{font-size:clamp(2.4rem,7vw,4.2rem);line-height:1.1;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:18px auto 30px;max-width:560px;color:var(--muted);font-size:1.1rem}
+.btn{display:inline-block;padding:12px 26px;border-radius:999px;font-weight:600;text-decoration:none;border:1px solid var(--border);color:var(--text)}
+.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;border:0}
+.btn{margin:0 6px}
+section.block{padding:50px 0}
+h2.title{font-size:1.8rem;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px}
+.card h3{color:var(--accent2);margin-bottom:8px}
+.card p{color:var(--muted)}
+.badge{display:inline-block;background:var(--code);color:var(--accent2);padding:2px 10px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem}
+pre{background:var(--code);border:1px solid var(--border);border-radius:12px;padding:20px;overflow-x:auto;font-size:.9rem;color:var(--accent2);font-family:ui-monospace,Menlo,Consolas,monospace}
+.stats{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;text-align:center}
+.stats div{flex:1 1 150px}
+.stats b{display:block;font-size:2rem;color:var(--accent)}
+.stats span{color:var(--muted);font-size:.9rem}
+footer{text-align:center;padding:50px 20px;color:var(--muted)}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <span class="logo">Jffect lib</span>
+    <div><a href="#effects">Эффекты</a><a href="#usage">Подключение</a><a href="#size">Вес</a></div>
+  </nav>
+
+  <header class="hero jf-fade">
+    <h1>Веб-эффекты<br>без лишнего веса</h1>
+    <p>Лёгкая библиотека на Vanilla JS: масштабирование при наведении и плавное появление при прокрутке. Один импорт — и всё работает.</p>
+    <a class="btn primary" href="#usage">Начать</a>
+    <a class="btn" href="#effects">Смотреть эффекты</a>
+  </header>
+
+  <section class="block" id="effects">
+    <h2 class="title jf-fade">Эффекты</h2>
+    <div class="grid">
+      <div class="card jf-hover-scale jf-fade">
+        <h3>Масштабирование</h3>
+        <p>Наведите курсор — карточка плавно увеличится. Класс <span class="badge">.jf-hover-scale</span></p>
+      </div>
+      <div class="card jf-hover-scale jf-fade">
+        <h3>Плавное появление</h3>
+        <p>Элементы проявляются при прокрутке через IntersectionObserver. Класс <span class="badge">.jf-fade</span></p>
+      </div>
+      <div class="card jf-hover-scale jf-fade">
+        <h3>Изоляция стилей</h3>
+        <p>Все классы имеют префикс <span class="badge">jf-</span> и не конфликтуют с вашей вёрсткой.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="usage">
+    <h2 class="title jf-fade">Подключение</h2>
+    <pre class="jf-fade">import { Jffect } from './jffect.js';
+
+Jffect.init();
+
+&lt;div class="jf-hover-scale"&gt;Наведи на меня&lt;/div&gt;
+&lt;div class="jf-fade"&gt;Появлюсь при прокрутке&lt;/div&gt;</pre>
+  </section>
+
+  <section class="block" id="size">
+    <h2 class="title jf-fade">Контроль веса</h2>
+    <div class="card jf-fade">
+      <p style="margin-bottom:24px">Встроенный плагин Vite проверяет размер бандла: при превышении лимита сборка завершается с кодом 1.</p>
+      <div class="stats">
+        <div><b>&lt; 50 КБ</b><span>лимит бандла</span></div>
+        <div><b>0</b><span>зависимостей</span></div>
+        <div><b>ES</b><span>формат модуля</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>Jffect lib © 2026 · MVP v0.1.0</footer>
+
+<script type="module" src="/src/core.js"></script>
+</body>
+</html>
